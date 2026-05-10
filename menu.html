@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta · Astro Neuquén</title>
+<meta name="description" content="Carta digital de Astro Neuquén — café de especialidad, brunch, dulces y experiencia zodiacal.">
+<meta name="theme-color" content="#7b1818">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%237b1818'/><path d='M50 20L56 40L76 50L56 60L50 80L44 60L24 50L44 40Z' fill='%23c9a455'/></svg>">
+<meta property="og:title" content="Carta · Astro Neuquén">
+<meta property="og:description" content="Café de especialidad, brunch, dulces y experiencia zodiacal en Neuquén Capital.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="img/astro_cafe_constelaciones.jpg">
+<meta property="og:locale" content="es_AR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf6f0;
+    --bg-dark: #0b0404;
+    --bg-dark-2: #140707;
+    --wine: #7b1818;
+    --wine-deep: #4a0d0d;
+    --gold: #c9a455;
+    --gold-deep: #a8862f;
+    --cream: #f0e6d0;
+    --ink: #1c1208;
+    --ink-soft: #5a4636;
+    --muted: #8b7560;
+    --line: rgba(28, 18, 8, 0.12);
+    --line-strong: rgba(28, 18, 8, 0.2);
+    --serif: "Playfair Display", Georgia, serif;
+    --sans: "Inter", system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { overflow-x: hidden; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    padding-top: 132px;
+  }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3, h4 {
+    font-family: var(--serif);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  /* ===== Header (dark, fixed) ===== */
+  .top-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: var(--bg-dark);
+    color: var(--cream);
+    z-index: 50;
+    border-bottom: 1px solid rgba(201, 164, 85, 0.2);
+  }
+  .top-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--serif);
+    font-size: 20px;
+    color: var(--cream);
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 25%, #a52727, #7b1818 55%, #4a0d0d 100%);
+    position: relative;
+    box-shadow: 0 0 0 1px rgba(201, 164, 85, 0.3);
+  }
+  .logo-mark::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+  }
+  .logo em { font-style: italic; color: var(--gold); }
+  .back-link {
+    font-size: 12.5px;
+    color: rgba(240, 230, 208, 0.8);
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--gold); }
+
+  /* ===== Sticky category nav ===== */
+  .cat-nav {
+    position: fixed;
+    top: 60px; left: 0; right: 0;
+    background: rgba(250, 246, 240, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    z-index: 49;
+  }
+  .cat-nav-scroll {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .cat-nav-scroll::-webkit-scrollbar { display: none; }
+  .cat-nav-list {
+    display: flex;
+    gap: 6px;
+    list-style: none;
+    width: max-content;
+  }
+  .cat-nav-list a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    border-radius: 999px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .cat-nav-list a:hover {
+    color: var(--ink);
+    background: rgba(28, 18, 8, 0.04);
+  }
+  .cat-nav-list a.active {
+    background: var(--bg-dark);
+    color: var(--gold);
+    border-color: var(--bg-dark);
+  }
+
+  /* ===== Hero / intro ===== */
+  .menu-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .menu-hero {
+    padding: 56px 0 48px;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before, .eyebrow::after {
+    content: "";
+    width: 24px; height: 1px;
+    background: var(--gold-deep);
+    opacity: 0.6;
+  }
+  .menu-hero h1 {
+    font-size: clamp(42px, 9vw, 68px);
+    margin: 18px 0 14px;
+  }
+  .menu-hero h1 em { font-style: italic; color: var(--wine); }
+  .menu-hero .lede {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  /* ===== Section ===== */
+  .cat-section {
+    padding: 56px 0 48px;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 130px;
+  }
+  .cat-head {
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .cat-emoji {
+    font-size: 28px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  .cat-head h2 {
+    font-size: 34px;
+    margin-bottom: 8px;
+  }
+  .cat-head .cat-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--gold-deep);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* ===== Item ===== */
+  .item {
+    padding: 18px 0;
+    border-bottom: 1px dashed var(--line);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px 24px;
+  }
+  .item:has(.item-thumb) {
+    grid-template-columns: 88px 1fr auto;
+    align-items: center;
+  }
+  .item-thumb {
+    width: 88px;
+    height: 88px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: #efe6d4;
+    display: block;
+  }
+  .item:last-child { border-bottom: none; }
+  .item-name {
+    font-family: var(--serif);
+    font-size: 19px;
+    color: var(--ink);
+    font-weight: 500;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .item-desc {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    max-width: 480px;
+  }
+  .item-price {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--wine);
+    font-weight: 500;
+    white-space: nowrap;
+    align-self: start;
+    padding-top: 2px;
+  }
+  .featured {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 9.5px;
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--gold-deep);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid var(--gold-deep);
+    border-radius: 3px;
+  }
+  .veg { color: #4a7a3a; font-size: 13px; }
+
+  /* ===== Zodiacal special section ===== */
+  .zodiacal {
+    background: var(--bg-dark);
+    color: var(--cream);
+    padding: 80px 0 70px;
+    margin: 0 -100vw;
+    padding-left: calc(100vw - 50%);
+    padding-right: calc(100vw - 50%);
+    position: relative;
+    overflow: hidden;
+    scroll-margin-top: 130px;
+  }
+  .zodiacal-stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .zodiacal-stars::before, .zodiacal-stars::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(240, 230, 208, 0.7), transparent),
+      radial-gradient(1px 1px at 28% 64%, rgba(216, 185, 106, 0.6), transparent),
+      radial-gradient(1.5px 1.5px at 47% 32%, rgba(240, 230, 208, 0.8), transparent),
+      radial-gradient(1px 1px at 65% 78%, rgba(240, 230, 208, 0.5), transparent),
+      radial-gradient(1px 1px at 80% 14%, rgba(216, 185, 106, 0.7), transparent),
+      radial-gradient(1.2px 1.2px at 92% 52%, rgba(240, 230, 208, 0.6), transparent),
+      radial-gradient(1px 1px at 8% 88%, rgba(240, 230, 208, 0.6), transparent),
+      radial-gradient(1px 1px at 38% 92%, rgba(216, 185, 106, 0.5), transparent),
+      radial-gradient(1px 1px at 73% 38%, rgba(240, 230, 208, 0.7), transparent),
+      radial-gradient(1.3px 1.3px at 56% 8%, rgba(240, 230, 208, 0.6), transparent);
+    animation: twinkle 4s ease-in-out infinite alternate;
+  }
+  .zodiacal-stars::after {
+    animation-delay: 2s;
+    background-image:
+      radial-gradient(1px 1px at 22% 30%, rgba(240, 230, 208, 0.5), transparent),
+      radial-gradient(1.2px 1.2px at 60% 60%, rgba(216, 185, 106, 0.6), transparent),
+      radial-gradient(1px 1px at 88% 80%, rgba(240, 230, 208, 0.7), transparent),
+      radial-gradient(1px 1px at 18% 70%, rgba(240, 230, 208, 0.5), transparent),
+      radial-gradient(1px 1px at 44% 50%, rgba(216, 185, 106, 0.5), transparent);
+  }
+  @keyframes twinkle {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
+  }
+  .zodiacal-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .zodiacal-head { text-align: center; margin-bottom: 36px; }
+  .zodiacal-head .eyebrow { color: var(--gold); }
+  .zodiacal-head .eyebrow::before, .zodiacal-head .eyebrow::after {
+    background: var(--gold); opacity: 0.6;
+  }
+  .zodiacal-head h2 {
+    font-size: 38px;
+    margin: 18px 0 18px;
+  }
+  .zodiacal-head h2 em { color: var(--gold); font-style: italic; }
+  .zodiacal-head p {
+    font-size: 15px;
+    color: rgba(240, 230, 208, 0.78);
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .zodiacal-discount {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 22px;
+    padding: 10px 20px;
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .zodiacal-discount strong {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--cream);
+    font-weight: 500;
+  }
+
+  .zodiac-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(201, 164, 85, 0.18);
+    border: 1px solid rgba(201, 164, 85, 0.18);
+    margin-top: 36px;
+  }
+  .zodiac-item {
+    background: var(--bg-dark);
+    padding: 22px 16px;
+    text-align: center;
+    transition: background 0.3s;
+  }
+  .zodiac-item:hover { background: var(--bg-dark-2); }
+  .zodiac-glyph {
+    font-size: 26px;
+    color: var(--gold);
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+  .zodiac-name {
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .zodiac-date {
+    font-size: 10.5px;
+    color: rgba(240, 230, 208, 0.55);
+    letter-spacing: 0.06em;
+  }
+  .zodiac-item.active-sign {
+    background: rgba(201, 164, 85, 0.12);
+    outline: 1px solid rgba(201, 164, 85, 0.45);
+    outline-offset: -1px;
+  }
+  .zodiac-item.active-sign .zodiac-name {
+    color: var(--gold);
+  }
+  .zodiac-item.active-sign .zodiac-date {
+    color: rgba(201, 164, 85, 0.75);
+  }
+  .sign-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 7px 16px;
+    background: rgba(201, 164, 85, 0.1);
+    border: 1px solid rgba(201, 164, 85, 0.3);
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+  }
+
+  /* ===== Footer note ===== */
+  .menu-foot {
+    padding: 56px 0 80px;
+    text-align: center;
+  }
+  .menu-foot p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .menu-foot .ornament {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--gold-deep);
+    margin-bottom: 18px;
+    font-size: 22px;
+    letter-spacing: 0.4em;
+  }
+
+  /* ===== Menu hero accent ===== */
+  .menu-hero-accent {
+    width: 92px;
+    height: 92px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--gold);
+    box-shadow: 0 8px 28px -10px rgba(123, 24, 24, 0.35);
+    position: relative;
+  }
+  .menu-hero-accent img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+    display: block;
+  }
+
+  /* ===== Scroll progress ===== */
+  .scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--wine), var(--gold));
+    z-index: 60;
+    transition: width 0.08s linear;
+    box-shadow: 0 0 12px rgba(201, 164, 85, 0.5);
+  }
+
+  @media (max-width: 540px) {
+    body { padding-top: 124px; }
+    .menu-hero { padding: 40px 0 36px; }
+    .cat-section { padding: 44px 0 36px; }
+    .item { grid-template-columns: 1fr; }
+    .item:has(.item-thumb) {
+      grid-template-columns: 72px 1fr;
+      grid-template-areas: "thumb body" "price price";
+      gap: 10px 16px;
+    }
+    .item:has(.item-thumb) .item-thumb { grid-area: thumb; width: 72px; height: 72px; }
+    .item:has(.item-thumb) .item-body { grid-area: body; }
+    .item:has(.item-thumb) .item-price { grid-area: price; }
+    .item-price { padding-top: 0; }
+    .zodiac-grid { grid-template-columns: repeat(2, 1fr); }
+    .menu-hero h1 { font-size: 42px; }
+    .cat-head h2 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<header class="top-header">
+  <div class="top-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark"></span>
+      <span>astro<em>·</em></span>
+    </a>
+    <a href="index.html" class="back-link">← Volver al sitio</a>
+  </div>
+</header>
+
+<nav class="cat-nav" id="catNav">
+  <div class="cat-nav-scroll">
+    <ul class="cat-nav-list">
+      <li><a href="#cafes" data-target="cafes">☕ Cafés</a></li>
+      <li><a href="#frias" data-target="frias">🧊 Frías</a></li>
+      <li><a href="#calidas" data-target="calidas">🍵 Cálidas</a></li>
+      <li><a href="#brunch" data-target="brunch">🥑 Brunch</a></li>
+      <li><a href="#tostadas" data-target="tostadas">🥪 Tostadas</a></li>
+      <li><a href="#dulces" data-target="dulces">🥐 Dulces</a></li>
+      <li><a href="#zodiacal" data-target="zodiacal">♈ Zodiacal</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="menu-wrap">
+
+  <section class="menu-hero" data-screen-label="00 Carta">
+    <div class="menu-hero-accent">
+      <img src="img/astro_cafe_constelaciones.jpg" alt="Taza de café con constelaciones">
+    </div>
+    <span class="eyebrow">Carta · @astro.neuquen</span>
+    <h1>Carta del <em>universo.</em></h1>
+    <p class="lede">Como la luna, la dulzura también tiene sus fases. Bienvenidos a la carta de Astro.</p>
+  </section>
+
+  <!-- ===== CAFÉS ===== -->
+  <section class="cat-section" id="cafes" data-screen-label="01 Cafes">
+    <div class="cat-head">
+      <span class="cat-emoji">☕</span>
+      <span class="cat-num">Categoría 01</span>
+      <h2>Cafés de Especialidad</h2>
+    </div>
+
+    <div class="item">
+      <div>
+        <div class="item-name">Espresso</div>
+        <div class="item-desc">Extracción pura, concentrada e intensa.</div>
+      </div>
+      <div class="item-price">$4.800</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Cortado</div>
+        <div class="item-desc">Espresso con un toque de leche vaporizada.</div>
+      </div>
+      <div class="item-price">$5.000</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Americano</div>
+        <div class="item-desc">Espresso suavizado con agua caliente.</div>
+      </div>
+      <div class="item-price">$5.500</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Latte</div>
+        <div class="item-desc">Espresso con abundante leche cremosa.</div>
+      </div>
+      <div class="item-price">$6.200</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Cappuccino</div>
+        <div class="item-desc">Espresso, leche y espuma en partes iguales.</div>
+      </div>
+      <div class="item-price">$6.800</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Flat White</div>
+        <div class="item-desc">Doble ristretto con leche sedosa · bien intenso.</div>
+      </div>
+      <div class="item-price">$7.000</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">V60</div>
+        <div class="item-desc">Café filtrado por goteo lento · notas florales y frutales.</div>
+      </div>
+      <div class="item-price">$8.500</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Aeropress</div>
+        <div class="item-desc">Método de inmersión · cuerpo completo y sabor limpio.</div>
+      </div>
+      <div class="item-price">$8.500</div>
+    </div>
+    <div class="item">
+      <img class="item-thumb" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=400&q=80" alt="Café con arte latte cósmico" loading="lazy">
+      <div class="item-body">
+        <div class="item-name">Café Zodiacal <span class="featured">★ Destacado</span></div>
+        <div class="item-desc">El café del mes según el signo de temporada. Preguntá cuál toca hoy.</div>
+      </div>
+      <div class="item-price">$8.500</div>
+    </div>
+  </section>
+
+  <!-- ===== FRÍAS ===== -->
+  <section class="cat-section" id="frias" data-screen-label="02 Frias">
+    <div class="cat-head">
+      <span class="cat-emoji">🧊</span>
+      <span class="cat-num">Categoría 02</span>
+      <h2>Bebidas Frías</h2>
+    </div>
+
+    <div class="item">
+      <div>
+        <div class="item-name">Iced Latte</div>
+        <div class="item-desc">Latte sobre hielo · refrescante y cremoso.</div>
+      </div>
+      <div class="item-price">$7.000</div>
+    </div>
+    <div class="item">
+      <img class="item-thumb" src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=400&q=80" alt="Cold brew servido en vaso con hielo" loading="lazy">
+      <div class="item-body">
+        <div class="item-name">Cold Brew</div>
+        <div class="item-desc">Café infusionado en frío por 12 horas.</div>
+      </div>
+      <div class="item-price">$7.200</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Iced Matcha Latte</div>
+        <div class="item-desc">Matcha japonés con leche de avena · sobre hielo.</div>
+      </div>
+      <div class="item-price">$7.800</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Frappé de Café</div>
+        <div class="item-desc">Café batido con hielo y leche · cremoso.</div>
+      </div>
+      <div class="item-price">$7.000</div>
+    </div>
+    <div class="item">
+      <img class="item-thumb" src="img/smoothie_rojo.jpg" alt="Smoothie rojo Astro">
+      <div class="item-body">
+        <div class="item-name">Smoothie Rojo <span class="veg">🌿</span></div>
+        <div class="item-desc">Mix de berries, banana y leche vegetal.</div>
+      </div>
+      <div class="item-price">$8.500</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Smoothie Verde <span class="veg">🌿</span></div>
+        <div class="item-desc">Espinaca, manzana, jengibre y limón.</div>
+      </div>
+      <div class="item-price">$8.500</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Limonada Astro</div>
+        <div class="item-desc">Limón, jengibre y menta · energía solar.</div>
+      </div>
+      <div class="item-price">$7.500</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Jugo de Naranja Natural</div>
+        <div class="item-desc">Exprimido al momento.</div>
+      </div>
+      <div class="item-price">$8.500</div>
+    </div>
+  </section>
+
+  <!-- ===== CÁLIDAS ===== -->
+  <section class="cat-section" id="calidas" data-screen-label="03 Calidas">
+    <div class="cat-head">
+      <span class="cat-emoji">🍵</span>
+      <span class="cat-num">Categoría 03</span>
+      <h2>Bebidas Cálidas</h2>
+    </div>
+
+    <div class="item">
+      <img class="item-thumb" src="https://images.unsplash.com/photo-1547825407-2d060104b7f8?auto=format&fit=crop&w=400&q=80" alt="Matcha latte verde con espuma" loading="lazy">
+      <div class="item-body">
+        <div class="item-name">Matcha Latte</div>
+        <div class="item-desc">Matcha ceremonial con leche vaporizada.</div>
+      </div>
+      <div class="item-price">$7.500</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Chai Latte</div>
+        <div class="item-desc">Té especiado con leche cremosa y canela.</div>
+      </div>
+      <div class="item-price">$7.000</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Chocolate Caliente</div>
+        <div class="item-desc">Cacao puro con leche entera · reconfortante.</div>
+      </div>
+      <div class="item-price">$6.800</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Té · Selección del día</div>
+        <div class="item-desc">Variedad de blends · consultá la carta.</div>
+      </div>
+      <div class="item-price">$4.500</div>
+    </div>
+  </section>
+
+  <!-- ===== BRUNCH ===== -->
+  <section class="cat-section" id="brunch" data-screen-label="04 Brunch">
+    <div class="cat-head">
+      <span class="cat-emoji">🥑</span>
+      <span class="cat-num">Categoría 04</span>
+      <h2>Brunch &amp; Platos</h2>
+    </div>
+
+    <div class="item">
+      <img class="item-thumb" src="img/bowl_vegetales.jpg" alt="Bowl vegano con palta, huevo pochado y zanahoria">
+      <div class="item-body">
+        <div class="item-name">Bowl Vegano <span class="featured">★ Destacado</span></div>
+        <div class="item-desc">Palta, huevo pochado, zanahoria asada, tomate cherry y hojas verdes · semillas y aceite de oliva.</div>
+      </div>
+      <div class="item-price">$16.000</div>
+    </div>
+    <div class="item">
+      <img class="item-thumb" src="img/tostada_salmon.jpg" alt="Tostada de salmón ahumado con queso crema y alcaparras">
+      <div class="item-body">
+        <div class="item-name">Tostada de Salmón Ahumado <span class="featured">★ Destacado</span></div>
+        <div class="item-desc">Pan artesanal tostado, queso crema, salmón rosado y alcaparras · estrella de la carta.</div>
+      </div>
+      <div class="item-price">$18.000</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Tostada de Palta con Huevo</div>
+        <div class="item-desc">Palta aplastada, huevo pochado, semillas y sal marina.</div>
+      </div>
+      <div class="item-price">$14.000</div>
+    </div>
+    <div class="item">
+      <img class="item-thumb" src="img/ensalada.jpg" alt="Bowl de ensalada compartida con hojas y vegetales">
+      <div class="item-body">
+        <div class="item-name">Bowl Ensalada Compartida</div>
+        <div class="item-desc">Mix de hojas, vegetales de estación, aderezo de la casa.</div>
+      </div>
+      <div class="item-price">$13.500</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Plato Brunch Completo</div>
+        <div class="item-desc">Combinación del día · consultá disponibilidad.</div>
+      </div>
+      <div class="item-price">$22.000</div>
+    </div>
+  </section>
+
+  <!-- ===== TOSTADAS ===== -->
+  <section class="cat-section" id="tostadas" data-screen-label="05 Tostadas">
+    <div class="cat-head">
+      <span class="cat-emoji">🥪</span>
+      <span class="cat-num">Categoría 05</span>
+      <h2>Tostadas &amp; Sandwiches</h2>
+    </div>
+
+    <div class="item">
+      <img class="item-thumb" src="img/sandwich_artesanal.jpg" alt="Sandwich artesanal con jamón serrano y queso">
+      <div class="item-body">
+        <div class="item-name">Sandwich Artesanal</div>
+        <div class="item-desc">Jamón serrano, queso y vegetales en pan de masa madre.</div>
+      </div>
+      <div class="item-price">$15.000</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Tostada de Avocado</div>
+        <div class="item-desc">Palta aplastada, limón, ají molido y semillas.</div>
+      </div>
+      <div class="item-price">$11.500</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Tostada de Durazno</div>
+        <div class="item-desc">Pan brioche tostado, queso crema y durazno.</div>
+      </div>
+      <div class="item-price">$10.000</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Tostada Caprese</div>
+        <div class="item-desc">Tomate, mozzarella, albahaca y aceite de oliva.</div>
+      </div>
+      <div class="item-price">$12.500</div>
+    </div>
+  </section>
+
+  <!-- ===== DULCES ===== -->
+  <section class="cat-section" id="dulces" data-screen-label="06 Dulces">
+    <div class="cat-head">
+      <span class="cat-emoji">🥐</span>
+      <span class="cat-num">Categoría 06</span>
+      <h2>Dulces &amp; Pastelería</h2>
+    </div>
+
+    <div class="item">
+      <div>
+        <div class="item-name">Medialunas (x3)</div>
+        <div class="item-desc">Recién horneadas · hojaldradas y perfectas.</div>
+      </div>
+      <div class="item-price">$7.000</div>
+    </div>
+    <div class="item">
+      <img class="item-thumb" src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=400&q=80" alt="Croissant de chocolate hojaldrado" loading="lazy">
+      <div class="item-body">
+        <div class="item-name">Croissant de Chocolate</div>
+        <div class="item-desc">Masa hojaldrada con relleno de chocolate belga.</div>
+      </div>
+      <div class="item-price">$9.500</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Cookie Cósmica</div>
+        <div class="item-desc">Cookie XXL con chips de chocolate y sal marina.</div>
+      </div>
+      <div class="item-price">$6.500</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Roll de Canela</div>
+        <div class="item-desc">Esponjoso, caramelizado y celestial.</div>
+      </div>
+      <div class="item-price">$8.500</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Torta del Día</div>
+        <div class="item-desc">Preguntá cuál es la propuesta de hoy.</div>
+      </div>
+      <div class="item-price">$10.000</div>
+    </div>
+    <div class="item">
+      <div>
+        <div class="item-name">Brownie</div>
+        <div class="item-desc">Húmedo, intenso y con nueces.</div>
+      </div>
+      <div class="item-price">$9.500</div>
+    </div>
+  </section>
+</main>
+
+<!-- ===== ZODIACAL (full-bleed dark) ===== -->
+<section class="zodiacal" id="zodiacal" data-screen-label="07 Zodiacal">
+  <div class="zodiacal-stars"></div>
+  <div class="zodiacal-inner">
+    <div class="zodiacal-head">
+      <span class="eyebrow">Categoría 07 · Zodiacal</span>
+      <h2>Cada mes,<br>un <em>signo.</em></h2>
+      <p>Cada signo, un café único creado para su energía particular. Mostrá tu DNI si es tu temporada solar y disfrutá de la experiencia Zodiacal.</p>
+      <div class="zodiacal-discount">
+        <span>Descuento</span>
+        <strong>10% OFF</strong>
+        <span>signo del mes</span>
+      </div>
+    </div>
+
+    <div class="zodiac-grid">
+      <div class="zodiac-item"><div class="zodiac-glyph">♈</div><div class="zodiac-name">Aries</div><div class="zodiac-date">21 mar – 19 abr</div></div>
+      <div class="zodiac-item"><div class="zodiac-glyph">♉</div><div class="zodiac-name">Tauro</div><div class="zodiac-date">20 abr – 20 may</div></div>
+      <div class="zodiac-item"><div class="zodiac-glyph">♊</div><div class="zodiac-name">Géminis</div><div class="zodiac-date">21 may – 20 jun</div></div>
+      <div class="zodiac-item"><div class="zodiac-glyph">♋</div><div class="zodiac-name">Cáncer</div><div class="zodiac-date">21 jun – 22 jul</div></div>
+      <div class="zodiac-item"><div class="zodiac-glyph">♌</div><div class="zodiac-name">Leo</div><div class="zodiac-date">23 jul – 22 ago</div></div>
+      <div class="zodiac-item"><div class="zodiac-glyph">♍</div><div class="zodiac-name">Virgo</div><div class="zodiac-date">23 ago – 22 sep</div></div>
+      <div class="zodiac-item"><div class="zodiac-glyph">♎</div><div class="zodiac-name">Libra</div><div class="zodiac-date">23 sep – 22 oct</div></div>
+      <div class="zodiac-item"><div class="zodiac-glyph">♏</div><div class="zodiac-name">Escorpio</div><div class="zodiac-date">23 oct – 21 nov</div></div>
+      <div class="zodiac-item"><div class="zodiac-glyph">♐</div><div class="zodiac-name">Sagitario</div><div class="zodiac-date">22 nov – 21 dic</div></div>
+      <div class="zodiac-item"><div class="zodiac-glyph">♑</div><div class="zodiac-name">Capricornio</div><div class="zodiac-date">22 dic – 19 ene</div></div>
+      <div class="zodiac-item"><div class="zodiac-glyph">♒</div><div class="zodiac-name">Acuario</div><div class="zodiac-date">20 ene – 18 feb</div></div>
+      <div class="zodiac-item"><div class="zodiac-glyph">♓</div><div class="zodiac-name">Piscis</div><div class="zodiac-date">19 feb – 20 mar</div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="menu-wrap">
+  <div class="menu-foot">
+    <div class="ornament">✦ ✦ ✦</div>
+    <p>
+      Precios en pesos argentinos · IVA incluido.<br>
+      La carta puede variar según disponibilidad estacional.<br>
+      Consultá al staff por opciones sin TACC, veganas o sin lactosa.
+    </p>
+    <p style="margin-top:24px; font-family: var(--serif); font-style: italic; color: var(--wine);">
+      "Reset your mind ✨"
+    </p>
+    <p style="margin-top:18px; font-size: 11.5px; letter-spacing: 0.1em;">
+      © 2026 ASTRO NEUQUÉN · @ASTRO.NEUQUEN · J. A. ROCA 139, NEUQUÉN
+    </p>
+  </div>
+</footer>
+
+<script>
+/* ===== Scroll progress bar ===== */
+(function() {
+  const bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  let ticking = false;
+  function update() {
+    const h = document.documentElement;
+    const scrolled = h.scrollTop || document.body.scrollTop;
+    const total = h.scrollHeight - h.clientHeight;
+    const pct = total > 0 ? (scrolled / total) * 100 : 0;
+    bar.style.width = pct + '%';
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+
+/* ===== Active zodiac sign ===== */
+(function() {
+  const signs = [
+    { name: 'Capricornio', from: [12, 22], to: [1, 19] },
+    { name: 'Acuario',     from: [1, 20],  to: [2, 18] },
+    { name: 'Piscis',      from: [2, 19],  to: [3, 20] },
+    { name: 'Aries',       from: [3, 21],  to: [4, 19] },
+    { name: 'Tauro',       from: [4, 20],  to: [5, 20] },
+    { name: 'Géminis',     from: [5, 21],  to: [6, 20] },
+    { name: 'Cáncer',      from: [6, 21],  to: [7, 22] },
+    { name: 'Leo',         from: [7, 23],  to: [8, 22] },
+    { name: 'Virgo',       from: [8, 23],  to: [9, 22] },
+    { name: 'Libra',       from: [9, 23],  to: [10, 22] },
+    { name: 'Escorpio',    from: [10, 23], to: [11, 21] },
+    { name: 'Sagitario',   from: [11, 22], to: [12, 21] },
+  ];
+  const now = new Date();
+  const m = now.getMonth() + 1, d = now.getDate();
+  const current = signs.find(s => {
+    const [fm, fd] = s.from, [tm, td] = s.to;
+    if (fm <= tm) return (m === fm && d >= fd) || (m === tm && d <= td) || (m > fm && m < tm);
+    return (m === fm && d >= fd) || (m === tm && d <= td) || m > fm || m < tm;
+  });
+  if (!current) return;
+  document.querySelectorAll('.zodiac-item').forEach(el => {
+    if (el.querySelector('.zodiac-name')?.textContent.trim() === current.name) {
+      el.classList.add('active-sign');
+    }
+  });
+  const head = document.querySelector('.zodiacal-head');
+  if (head) {
+    const badge = document.createElement('div');
+    badge.className = 'sign-badge';
+    badge.textContent = '✦ Signo del mes: ' + current.name;
+    head.appendChild(badge);
+  }
+})();
+
+/* ===== Active category highlight via IntersectionObserver ===== */
+(function() {
+  const sections = document.querySelectorAll('.cat-section, #zodiacal');
+  const links = document.querySelectorAll('.cat-nav-list a');
+  const linkMap = {};
+  links.forEach(a => { linkMap[a.dataset.target] = a; });
+
+  function setActive(id) {
+    links.forEach(a => a.classList.remove('active'));
+    if (linkMap[id]) {
+      linkMap[id].classList.add('active');
+      // Scroll the active link into view in the horizontal nav
+      const navScroll = document.querySelector('.cat-nav-scroll');
+      const linkRect = linkMap[id].getBoundingClientRect();
+      const navRect = navScroll.getBoundingClientRect();
+      if (linkRect.left < navRect.left || linkRect.right > navRect.right) {
+        navScroll.scrollTo({
+          left: linkMap[id].offsetLeft - navRect.width / 2 + linkRect.width / 2,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    // Find the entry whose intersectionRatio is highest among visible
+    const visible = entries
+      .filter(e => e.isIntersecting)
+      .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+    if (visible.length) {
+      setActive(visible[0].target.id);
+    }
+  }, {
+    rootMargin: '-140px 0px -55% 0px',
+    threshold: [0, 0.1, 0.25, 0.5]
+  });
+
+  sections.forEach(s => io.observe(s));
+
+  // Also handle direct click → smooth scroll w/ offset
+  links.forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = a.dataset.target;
+      const el = document.getElementById(id);
+      if (el) {
+        const headerH = (document.querySelector('.top-header')?.offsetHeight || 60) + (document.querySelector('.cat-nav')?.offsetHeight || 58);
+      const top = el.getBoundingClientRect().top + window.scrollY - headerH - 8;
+        window.scrollTo({ top, behavior: 'smooth' });
+        setActive(id);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

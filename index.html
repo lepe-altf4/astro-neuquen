@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Astro · Café de especialidad · Neuquén</title>
+<meta name="description" content="Donde el café se alinea con las estrellas. Café de especialidad en Neuquén Capital.">
+<meta name="theme-color" content="#7b1818">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%237b1818'/><path d='M50 20L56 40L76 50L56 60L50 80L44 60L24 50L44 40Z' fill='%23c9a455'/></svg>">
+<meta property="og:title" content="Astro · Café de Especialidad · Neuquén">
+<meta property="og:description" content="Donde el café se alinea con las estrellas. Café de especialidad, brunch y experiencias únicas en Neuquén Capital.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="img/astro_hero_cafe.jpg">
+<meta property="og:locale" content="es_AR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0404;
+    --bg-2: #140707;
+    --wine: #7b1818;
+    --wine-deep: #4a0d0d;
+    --gold: #c9a455;
+    --gold-soft: #d8b96a;
+    --cream: #f0e6d0;
+    --off: #faf6f0;
+    --muted: rgba(240, 230, 208, 0.62);
+    --line: rgba(201, 164, 85, 0.18);
+    --serif: "Playfair Display", Georgia, serif;
+    --sans: "Inter", system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+  h1, h2, h3, h4 {
+    font-family: var(--serif);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  /* ---------- Star canvas ---------- */
+  #stars {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ---------- Layout helpers ---------- */
+  .wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 2;
+  }
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.6;
+  }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+    border-bottom: 1px solid transparent;
+  }
+  .nav.scrolled {
+    background: rgba(11, 4, 4, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom-color: var(--line);
+  }
+  .nav-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    color: var(--cream);
+  }
+  .logo-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 25%, #a52727, #7b1818 55%, #4a0d0d 100%);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 0 0 1px rgba(201, 164, 85, 0.25), 0 4px 18px rgba(123, 24, 24, 0.4);
+    position: relative;
+  }
+  .logo-mark::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+  }
+  .logo-text { font-style: italic; }
+  .logo-text em { font-style: italic; }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 14px;
+    color: var(--cream);
+    opacity: 0.78;
+    transition: opacity 0.2s, color 0.2s;
+    position: relative;
+    padding: 4px 0;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+
+  .cta-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 22px;
+    background: var(--gold);
+    color: #2a1a05;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+  }
+  .cta-gold:hover {
+    background: var(--gold-soft);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -8px rgba(201, 164, 85, 0.6);
+  }
+  .cta-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 22px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: background 0.2s, color 0.2s;
+  }
+  .cta-outline:hover { background: rgba(201, 164, 85, 0.1); }
+
+  .hamburger {
+    display: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .hamburger span {
+    width: 16px;
+    height: 1.5px;
+    background: var(--cream);
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 88%;
+    max-width: 380px;
+    background: var(--bg-2);
+    border-left: 1px solid var(--line);
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: 49;
+    padding: 90px 32px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-menu a {
+    font-family: var(--serif);
+    font-size: 28px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 16px;
+  }
+  .mobile-menu a:last-child {
+    border: none;
+    margin-top: 12px;
+    align-self: flex-start;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 140px 0 100px;
+    position: relative;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 80%, rgba(123, 24, 24, 0.18), transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .hero-content { max-width: 880px; position: relative; z-index: 2; }
+  .hero h1 {
+    font-size: clamp(48px, 8.2vw, 112px);
+    font-weight: 500;
+    margin: 28px 0 24px;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 .accent {
+    font-style: italic;
+    color: var(--gold);
+    font-weight: 400;
+  }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 540px;
+    margin-bottom: 36px;
+    letter-spacing: 0.01em;
+  }
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 44px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 12.5px;
+    color: var(--cream);
+    background: rgba(255, 255, 255, 0.02);
+    letter-spacing: 0.02em;
+  }
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+  }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; }
+  .hero-ctas .cta-gold,
+  .hero-ctas .cta-outline {
+    padding: 14px 28px;
+    font-size: 14px;
+  }
+
+  /* corner ornament */
+  .ornament {
+    position: absolute;
+    color: var(--gold);
+    opacity: 0.5;
+    font-size: 14px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    font-family: var(--sans);
+    z-index: 2;
+  }
+  .ornament.tl { top: 110px; right: 32px; writing-mode: vertical-rl; }
+  .ornament-line {
+    display: inline-block;
+    width: 1px;
+    height: 60px;
+    background: var(--gold);
+    opacity: 0.3;
+    margin-bottom: 12px;
+  }
+
+  /* ---------- Sections ---------- */
+  section { position: relative; }
+  .section {
+    padding: 130px 0;
+    position: relative;
+    z-index: 2;
+  }
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line) 30%, var(--line) 70%, transparent);
+    width: 100%;
+    z-index: 2;
+    position: relative;
+  }
+  .section-head {
+    margin-bottom: 64px;
+    max-width: 720px;
+  }
+  .section-head h2 {
+    font-size: clamp(38px, 5.5vw, 64px);
+    margin: 22px 0 18px;
+  }
+  .section-head h2 em { color: var(--gold); font-weight: 500; }
+  .section-head p {
+    font-size: 16.5px;
+    color: var(--muted);
+    max-width: 580px;
+  }
+
+  /* ---------- Nosotros ---------- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 72px;
+    align-items: center;
+  }
+  .about-copy p {
+    font-size: 17px;
+    color: rgba(240, 230, 208, 0.8);
+    margin-bottom: 36px;
+  }
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    border-top: 1px solid var(--line);
+    padding-top: 32px;
+  }
+  .feature {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .feature-mark {
+    color: var(--gold);
+    font-size: 18px;
+    line-height: 1.4;
+  }
+  .feature h4 {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--cream);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .feature p {
+    font-size: 15px;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .visual-frame {
+    aspect-ratio: 4/5;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    background: #0b0404;
+    border: 1px solid var(--line);
+  }
+  .visual-frame img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.92) contrast(1.02);
+  }
+  .visual-frame::before {
+    content: "";
+    position: absolute;
+    inset: 16px;
+    border: 1px solid rgba(201, 164, 85, 0.45);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .visual-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(11,4,4,0) 55%, rgba(11,4,4,0.85) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .visual-label {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    font-family: ui-monospace, "SF Mono", monospace;
+    font-size: 11px;
+    color: rgba(240, 230, 208, 0.7);
+    letter-spacing: 0.1em;
+    display: flex;
+    justify-content: space-between;
+    z-index: 3;
+  }
+
+  /* ---------- Carta cards ---------- */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .card-cat {
+    aspect-ratio: 3/4;
+    border-radius: 4px;
+    padding: 28px 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s, border-color 0.4s;
+  }
+  .card-cat::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 0.4s, transform 0.6s;
+  }
+  .card-cat::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(180deg, rgba(11,4,4,0.35) 0%, rgba(11,4,4,0.55) 50%, rgba(11,4,4,0.95) 100%);
+    transition: opacity 0.4s;
+  }
+  .card-cat:hover {
+    transform: translateY(-4px);
+    border-color: rgba(201, 164, 85, 0.4);
+  }
+  .card-cat:hover::before { transform: scale(1.06); }
+  .card-cat > * { position: relative; z-index: 1; }
+  .card-cat .icon {
+    font-size: 26px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1px solid rgba(240, 230, 208, 0.2);
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.3);
+  }
+  .card-cat .num {
+    position: absolute;
+    top: 24px;
+    right: 26px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold);
+    z-index: 1;
+  }
+  .card-cat h3 {
+    font-size: 26px;
+    margin-bottom: 8px;
+    color: var(--cream);
+  }
+  .card-cat p {
+    font-size: 13.5px;
+    color: rgba(240, 230, 208, 0.65);
+    line-height: 1.55;
+  }
+  .card-cat-bottom { display: flex; flex-direction: column; gap: 16px; }
+
+  .card-cat.cat-1::before { background-image: url("img/astro_cafe_constelaciones.jpg"); }
+  .card-cat.cat-2::before { background-image: url("img/smoothie_rojo.jpg"); }
+  .card-cat.cat-3::before { background-image: url("img/bowl_vegetales.jpg"); }
+  .card-cat.cat-4::before { background-image: url("img/compartiendo.jpg"); }
+
+  .carta-cta {
+    margin-top: 56px;
+    text-align: center;
+  }
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 22px;
+    color: var(--gold);
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 8px;
+    transition: gap 0.3s;
+  }
+  .link-arrow:hover { gap: 22px; }
+
+  /* ---------- Eventos ---------- */
+  .events-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .event {
+    background: var(--bg);
+    padding: 48px 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    transition: background 0.3s;
+    position: relative;
+  }
+  .event:hover { background-color: var(--bg-2); }
+  .event-num {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 14px;
+    letter-spacing: 0.1em;
+  }
+  .event h3 {
+    font-size: 32px;
+    color: var(--cream);
+  }
+  .event p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+  .event-tag {
+    display: inline-flex;
+    width: fit-content;
+    padding: 5px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ---------- Ubicación ---------- */
+  .location-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: stretch;
+  }
+  .location-info {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .info-block {
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+  }
+  .info-block .label {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .info-block .value {
+    font-family: var(--serif);
+    font-size: 24px;
+    color: var(--cream);
+    line-height: 1.35;
+  }
+  .info-block .sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+  .location-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .map-frame {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    aspect-ratio: 1;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(201, 164, 85, 0.15), transparent 40%),
+      linear-gradient(180deg, #1a0a0a, #0b0404);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201, 164, 85, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201, 164, 85, 0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(circle at center, black, transparent 75%);
+  }
+  .map-pin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 14px;
+    height: 14px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 6px rgba(201, 164, 85, 0.2),
+      0 0 0 14px rgba(201, 164, 85, 0.08),
+      0 0 30px var(--gold);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 6px rgba(201, 164, 85, 0.2), 0 0 0 14px rgba(201, 164, 85, 0.08), 0 0 30px var(--gold); }
+    50% { box-shadow: 0 0 0 10px rgba(201, 164, 85, 0.15), 0 0 0 22px rgba(201, 164, 85, 0.04), 0 0 40px var(--gold); }
+  }
+  .map-coords {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    color: rgba(240, 230, 208, 0.4);
+    letter-spacing: 0.15em;
+  }
+  .map-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateY(28px);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .map-open-cta {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(201, 164, 85, 0.12);
+    border: 1px solid rgba(201, 164, 85, 0.35);
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    transition: background 0.25s, border-color 0.25s;
+  }
+  a.map-frame { display: block; text-decoration: none; cursor: pointer; }
+  a.map-frame:hover .map-open-cta {
+    background: rgba(201, 164, 85, 0.22);
+    border-color: rgba(201, 164, 85, 0.6);
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    padding: 80px 0 40px;
+    border-top: 1px solid var(--line);
+    position: relative;
+    z-index: 2;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 60px;
+  }
+  .footer-tag {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 22px;
+    color: var(--cream);
+    margin-top: 24px;
+    max-width: 320px;
+  }
+  .footer-col h5 {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col a {
+    font-size: 14px;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--gold); }
+  .footer-bottom {
+    border-top: 1px solid var(--line);
+    padding-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 12.5px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- Espacio banner ---------- */
+  .espacio {
+    position: relative;
+    z-index: 2;
+    padding: 0 0 0;
+  }
+  .espacio-frame {
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    aspect-ratio: 16/9;
+    max-height: 620px;
+  }
+  .espacio-frame img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.78) saturate(0.95);
+  }
+  .espacio-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 100%, rgba(11,4,4,0.85), transparent 60%),
+      linear-gradient(180deg, rgba(11,4,4,0.35) 0%, transparent 30%, rgba(11,4,4,0.6) 100%);
+    pointer-events: none;
+  }
+  .espacio-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 36px;
+    text-align: center;
+    z-index: 2;
+    padding: 0 24px;
+  }
+  .espacio-caption .eyebrow { justify-content: center; display: inline-flex; }
+  .espacio-caption h3 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--cream);
+    font-size: clamp(24px, 3vw, 36px);
+    margin-top: 14px;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.6);
+  }
+  @media (max-width: 540px) {
+    .espacio-frame { aspect-ratio: 4/5; }
+    .espacio-caption { bottom: 24px; }
+  }
+
+  /* ---------- Scroll progress bar ---------- */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--wine), var(--gold));
+    z-index: 60;
+    transition: width 0.08s linear;
+    box-shadow: 0 0 12px rgba(201, 164, 85, 0.6);
+  }
+
+  /* ---------- Marquee strip ---------- */
+  .marquee {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(90deg, transparent, rgba(123, 24, 24, 0.12), transparent);
+    padding: 22px 0;
+  }
+  .marquee-track {
+    display: inline-flex;
+    gap: 56px;
+    white-space: nowrap;
+    animation: marquee-scroll 38s linear infinite;
+    will-change: transform;
+  }
+  .marquee-track span {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(20px, 3vw, 30px);
+    color: var(--cream);
+    opacity: 0.85;
+    letter-spacing: 0.02em;
+  }
+  .marquee-track .dot {
+    color: var(--gold);
+    font-style: normal;
+    font-size: 14px;
+    align-self: center;
+    opacity: 0.7;
+  }
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track { animation: none; }
+  }
+
+  /* ---------- Event card images ---------- */
+  .event {
+    overflow: hidden;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat;
+    transition: background 0.4s, transform 0.4s;
+  }
+  .event::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(11,4,4,0.55) 0%, rgba(11,4,4,0.88) 100%);
+    z-index: 0;
+    pointer-events: none;
+    transition: background 0.4s ease;
+  }
+  .event:hover::before {
+    background: linear-gradient(180deg, rgba(11,4,4,0.35) 0%, rgba(11,4,4,0.78) 100%);
+  }
+  .event > * {
+    position: relative;
+    z-index: 1;
+  }
+  /* evt-1 usa <img> real, no bg */
+  .event.evt-1 {
+    background-image: none !important;
+    min-height: 360px;
+    padding-right: calc(44% + 24px);
+  }
+  .event.evt-1::before { display: none; }
+  .event-poster {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 42%;
+    z-index: 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-2);
+  }
+  .event-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.6s ease;
+  }
+  .event.evt-1:hover .event-poster img { transform: scale(1.04); }
+  .event-poster::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--bg) 0%, rgba(11,4,4,0.4) 12%, transparent 30%);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .event.evt-2 { background-image: url("https://images.unsplash.com/photo-1601024445121-e5b82f020549?auto=format&fit=crop&w=1200&q=80"); }
+  .event.evt-3 { background-image: url("https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=1200&q=80"); }
+  .event.evt-4 { background-image: url("https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80"); }
+  @media (max-width: 540px) {
+    .event.evt-1 {
+      padding-right: 28px;
+      padding-top: 260px;
+      min-height: auto;
+    }
+    .event-poster {
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: auto;
+      width: 100%;
+      height: 240px;
+    }
+    .event-poster::before {
+      background: linear-gradient(180deg, transparent 50%, var(--bg) 100%);
+    }
+  }
+
+  /* ---------- Real map embed ---------- */
+  .map-embed {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    filter: grayscale(0.45) invert(0.92) hue-rotate(180deg) saturate(0.65) brightness(0.95) contrast(0.95);
+    transition: filter 0.4s ease;
+  }
+  .map-frame:hover .map-embed {
+    filter: grayscale(0.3) invert(0.92) hue-rotate(180deg) saturate(0.85) brightness(1) contrast(1);
+  }
+  .map-frame {
+    isolation: isolate;
+  }
+  .map-overlay-pin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 8px rgba(201, 164, 85, 0.18),
+      0 0 0 18px rgba(201, 164, 85, 0.07),
+      0 0 30px var(--gold);
+    z-index: 3;
+    pointer-events: none;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  .map-coords {
+    z-index: 3;
+  }
+
+  /* ---------- Espacio parallax ---------- */
+  .espacio-frame img {
+    will-change: transform;
+    transform: translateY(0);
+    transition: transform 0.05s linear;
+    height: 120%;
+    top: -10%;
+  }
+
+  /* ---------- Reveal anim ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ---------- Mobile menu overlay ---------- */
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 48;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .menu-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 980px) {
+    .nav-links, .nav .cta-gold { display: none; }
+    .hamburger { display: flex; }
+    .ornament { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .visual-frame { aspect-ratio: 1.1/1; max-height: 460px; }
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+    .events-grid { grid-template-columns: 1fr; }
+    .location-grid { grid-template-columns: 1fr; gap: 40px; }
+    .footer-top { grid-template-columns: 1fr; gap: 36px; }
+    .section { padding: 90px 0; }
+    .hero { padding: 120px 0 80px; }
+    .wrap { padding: 0 22px; }
+    .nav-inner { padding: 14px 22px; }
+  }
+  @media (max-width: 540px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .event { padding: 36px 28px; }
+    .event h3 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<canvas id="stars"></canvas>
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="logo">
+      <span class="logo-mark"></span>
+      <span class="logo-text">astro<em>·</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#carta">Carta</a></li>
+      <li><a href="#eventos">Eventos</a></li>
+      <li><a href="#ubicacion">Ubicación</a></li>
+    </ul>
+    <a href="menu.html" class="cta-gold">Ver Menú →</a>
+    <button class="hamburger" id="hamburger" aria-label="Menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<aside class="mobile-menu" id="mobileMenu">
+  <a href="#nosotros">Nosotros</a>
+  <a href="#carta">Carta</a>
+  <a href="#eventos">Eventos</a>
+  <a href="#ubicacion">Ubicación</a>
+  <a href="menu.html" class="cta-gold">Ver Menú →</a>
+</aside>
+
+<!-- HERO -->
+<header class="hero" id="top" data-screen-label="01 Hero">
+  <div class="ornament tl">
+    <span class="ornament-line"></span><br>
+    Est. 2024 · Neuquén
+  </div>
+  <div class="wrap hero-content">
+    <span class="eyebrow">@astro.neuquen · Café de Especialidad</span>
+    <h1>
+      Donde el café<br>
+      se alinea con<br>
+      <span class="accent">las estrellas.</span>
+    </h1>
+    <p class="hero-sub">
+      Un universo donde lo cósmico, lo creativo y lo cotidiano se encuentran.
+      Cada café es un ritual; cada momento, una constelación.
+    </p>
+    <div class="badges">
+      <span class="badge"><span class="badge-dot"></span> Café de Especialidad</span>
+      <span class="badge"><span class="badge-dot"></span> Neuquén Capital</span>
+      <span class="badge"><span class="badge-dot"></span> Lun–Sáb · 7:30–21 hs</span>
+    </div>
+    <div class="hero-ctas">
+      <a href="menu.html" class="cta-gold">Ver la Carta →</a>
+      <a href="https://maps.google.com/?q=Julio+Argentino+Roca+139+Neuquen+Argentina" target="_blank" rel="noopener" class="cta-outline">Cómo llegar ↗</a>
+    </div>
+  </div>
+</header>
+
+<div class="section-divider"></div>
+
+<!-- NOSOTROS -->
+<section class="section" id="nosotros" data-screen-label="02 Nosotros">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <span class="eyebrow">Nosotros</span>
+        <div class="section-head" style="margin-bottom: 36px;">
+          <h2>Un universo<br><em>de sabor.</em></h2>
+        </div>
+        <p>
+          En Astro, cada café es un ritual. Un espacio donde lo cósmico, lo creativo
+          y lo cotidiano se encuentran. Nos obsesiona la calidad de cada grano,
+          la precisión de cada extracción y la calidez de cada momento que
+          compartimos con vos. Bienvenidos al universo Astro.
+        </p>
+        <div class="features">
+          <div class="feature">
+            <span class="feature-mark">✦</span>
+            <div>
+              <h4>Café de Especialidad</h4>
+              <p>Granos seleccionados de origen, tostados con intención.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="feature-mark">✦</span>
+            <div>
+              <h4>Método y Precisión</h4>
+              <p>Cada extracción es un ritual: temperatura, tiempo y silencio.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="feature-mark">✦</span>
+            <div>
+              <h4>Ambiente Único</h4>
+              <p>Arcos arquitectónicos, lámpara luna y energía cósmica.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="visual-frame">
+          <img src="img/astro_cafe_constelaciones.jpg" alt="Taza de café con constelaciones brotando del vapor" loading="lazy">
+          <div class="visual-label">
+            <span>// CONSTELACIÓN · TAZA</span>
+            <span>NQN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ESPACIO BANNER -->
+<section class="espacio reveal" aria-label="El espacio Astro">
+  <div class="espacio-frame">
+    <img src="img/astro_hero_cafe.jpg" alt="El equipo de Astro bajo el arco con la lámpara luna" loading="lazy">
+    <div class="espacio-caption">
+      <span class="eyebrow">El Espacio · Equipo Astro</span>
+      <h3>"Bajo nuestro arco lunar,<br>cada visita es una constelación."</h3>
+    </div>
+  </div>
+</section>
+
+<!-- CARTA PREVIEW -->
+<section class="section" id="carta" data-screen-label="03 Carta">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Nuestra Carta</span>
+      <h2>Del espresso clásico<br>al brunch <em>más cósmico.</em></h2>
+      <p>Cuatro universos, una misma obsesión: que cada sorbo te alinee.</p>
+    </div>
+    <div class="cards-grid">
+      <article class="card-cat cat-1 reveal">
+        <span class="num">01</span>
+        <span class="icon">☕</span>
+        <div class="card-cat-bottom">
+          <h3>Cafés de Especialidad</h3>
+          <p>Desde el espresso puro hasta el V60 más etéreo.</p>
+        </div>
+      </article>
+      <article class="card-cat cat-2 reveal">
+        <span class="num">02</span>
+        <span class="icon">🧊</span>
+        <div class="card-cat-bottom">
+          <h3>Bebidas Frías</h3>
+          <p>Iced latte, matcha, cold brew y smoothies frescos.</p>
+        </div>
+      </article>
+      <article class="card-cat cat-3 reveal">
+        <span class="num">03</span>
+        <span class="icon">🥑</span>
+        <div class="card-cat-bottom">
+          <h3>Brunch &amp; Platos</h3>
+          <p>Bowls veganos, tostadas y platos frescos de cocina.</p>
+        </div>
+      </article>
+      <article class="card-cat cat-4 reveal">
+        <span class="num">04</span>
+        <span class="icon">🥐</span>
+        <div class="card-cat-bottom">
+          <h3>Dulces &amp; Pastelería</h3>
+          <p>Medialunas, croissants y tortas artesanales del día.</p>
+        </div>
+      </article>
+    </div>
+    <div class="carta-cta reveal">
+      <a href="menu.html" class="link-arrow">Ver carta completa &nbsp;→</a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Café de especialidad</span><span class="dot">✦</span>
+    <span>Constelaciones</span><span class="dot">✦</span>
+    <span>Ritual cósmico</span><span class="dot">✦</span>
+    <span>Reset your mind</span><span class="dot">✦</span>
+    <span>Neuquén Capital</span><span class="dot">✦</span>
+    <span>Bajo el arco lunar</span><span class="dot">✦</span>
+    <span>Café de especialidad</span><span class="dot">✦</span>
+    <span>Constelaciones</span><span class="dot">✦</span>
+    <span>Ritual cósmico</span><span class="dot">✦</span>
+    <span>Reset your mind</span><span class="dot">✦</span>
+    <span>Neuquén Capital</span><span class="dot">✦</span>
+    <span>Bajo el arco lunar</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- EVENTOS -->
+<section class="section" id="eventos" data-screen-label="04 Eventos">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Eventos &amp; Experiencias</span>
+      <h2>Más que un café,<br>un <em>universo</em> de experiencias.</h2>
+    </div>
+    <div class="events-grid">
+      <article class="event evt-1 reveal">
+        <div class="event-poster">
+          <img src="img/rave.jpg" alt="Flyer Coffee Rave ft. Victoria Whynot · Vie 17.04 · 19:30 hs">
+        </div>
+        <span class="event-num">N° 01</span>
+        <span class="event-tag">Música en vivo</span>
+        <h3>Coffee Rave</h3>
+        <p>Música en vivo, café de especialidad y energía cósmica. Una noche diferente en el universo Astro.</p>
+      </article>
+      <article class="event evt-2 reveal">
+<span class="event-num">N° 02</span>
+        <span class="event-tag">Sábados</span>
+        <h3>Cafetería con Tarot</h3>
+        <p>Los sábados: tomá un café y consultá las cartas. Menú especial + experiencia astrológica.</p>
+      </article>
+      <article class="event evt-3 reveal">
+<span class="event-num">N° 03</span>
+        <span class="event-tag">Lun–Sáb</span>
+        <h3>Daily Brunch</h3>
+        <p>Lunes a sábados de 7:30 a 21 hs. Siempre una buena parada. <em>Always a good stop.</em></p>
+      </article>
+      <article class="event evt-4 reveal">
+<span class="event-num">N° 04</span>
+        <span class="event-tag">Viernes</span>
+        <h3>After Office</h3>
+        <p>Tapeo para compartir, vinito para brindar y el mejor mood para arrancar el finde.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- UBICACIÓN -->
+<section class="section" id="ubicacion" data-screen-label="05 Ubicacion">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Ubicación</span>
+      <h2>Vení a alinearte<br>con <em>nosotros.</em></h2>
+    </div>
+    <div class="location-grid">
+      <div class="location-info reveal">
+        <div class="info-block">
+          <div class="label">Dirección</div>
+          <div class="value">Julio Argentino Roca 139</div>
+          <div class="sub">Neuquén Capital · Argentina · 8300</div>
+        </div>
+        <div class="info-block">
+          <div class="label">Horario</div>
+          <div class="value">Lunes a sábados</div>
+          <div class="sub">7:30 – 21:00 hs · Domingos cerrado</div>
+        </div>
+        <div class="info-block">
+          <div class="label">Encontranos</div>
+          <div class="location-buttons">
+            <a href="https://maps.google.com/?q=Julio+Argentino+Roca+139+Neuquen+Argentina" target="_blank" rel="noopener" class="cta-gold">Ver en Google Maps ↗</a>
+            <a href="https://www.instagram.com/astro.neuquen/" target="_blank" rel="noopener" class="cta-outline">@astro.neuquen ↗</a>
+          </div>
+        </div>
+      </div>
+      <a href="https://maps.google.com/?q=Julio+Argentino+Roca+139+Neuquen+Argentina" target="_blank" rel="noopener" class="map-frame reveal" aria-label="Ver Astro en Google Maps">
+        <span class="map-overlay-pin"></span>
+        <span class="map-coords">38°57'S · 68°04'W</span>
+        <span class="map-label">Astro · J.A. Roca 139</span>
+        <span class="map-open-cta">Ver en Google Maps ↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <a href="#top" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">astro<em>·</em></span>
+        </a>
+        <p class="footer-tag">"Reset your mind ✨ Donde el café se alinea con las estrellas."</p>
+      </div>
+      <div class="footer-col">
+        <h5>Navegar</h5>
+        <ul>
+          <li><a href="#top">Inicio</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="menu.html">Carta</a></li>
+          <li><a href="#eventos">Eventos</a></li>
+          <li><a href="#ubicacion">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Encontranos</h5>
+        <ul>
+          <li><a href="https://www.instagram.com/astro.neuquen/" target="_blank" rel="noopener">Instagram · @astro.neuquen</a></li>
+          <li><a href="https://maps.google.com/?q=Julio+Argentino+Roca+139+Neuquen+Argentina" target="_blank" rel="noopener">Google Maps</a></li>
+          <li><span style="color: var(--muted)">J. A. Roca 139, Neuquén</span></li>
+          <li><span style="color: var(--muted)">Lun–Sáb · 7:30–21 hs</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Astro Neuquén · Todos los derechos reservados</span>
+      <span>Hecho con ✦ en Neuquén, Patagonia Argentina</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============== STAR CANVAS ============== */
+(function() {
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  const STAR_COUNT = 180;
+  let stars = [];
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let w, h;
+
+  function resize() {
+    w = window.innerWidth;
+    h = Math.max(window.innerHeight, document.body.scrollHeight);
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    initStars();
+  }
+
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < STAR_COUNT; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.4 + 0.3,
+        baseAlpha: Math.random() * 0.7 + 0.15,
+        twinkleSpeed: Math.random() * 0.018 + 0.004,
+        phase: Math.random() * Math.PI * 2,
+        big: Math.random() < 0.06,
+        gold: Math.random() < 0.18
+      });
+    }
+  }
+
+  let rafId = null;
+
+  function draw(t) {
+    ctx.clearRect(0, 0, w, h);
+    for (const s of stars) {
+      const tw = Math.sin(t * s.twinkleSpeed + s.phase);
+      const alpha = Math.max(0.04, s.baseAlpha * (0.55 + 0.45 * tw));
+      const color = s.gold
+        ? `rgba(216, 185, 106, ${alpha})`
+        : `rgba(240, 230, 208, ${alpha})`;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (s.big && tw > 0.5) {
+        ctx.strokeStyle = `rgba(216, 185, 106, ${alpha * 0.6})`;
+        ctx.lineWidth = 0.5;
+        const len = s.r * 4 * tw;
+        ctx.beginPath();
+        ctx.moveTo(s.x - len, s.y);
+        ctx.lineTo(s.x + len, s.y);
+        ctx.moveTo(s.x, s.y - len);
+        ctx.lineTo(s.x, s.y + len);
+        ctx.stroke();
+      }
+    }
+    rafId = requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  setTimeout(resize, 600);
+  rafId = requestAnimationFrame(draw);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { cancelAnimationFrame(rafId); rafId = null; }
+    else if (!rafId) { rafId = requestAnimationFrame(draw); }
+  });
+})();
+
+/* ============== NAV SCROLL ============== */
+(function() {
+  const nav = document.getElementById('nav');
+  function onScroll() {
+    if (window.scrollY > 24) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+/* ============== HAMBURGER ============== */
+(function() {
+  const btn = document.getElementById('hamburger');
+  const menu = document.getElementById('mobileMenu');
+  const overlay = document.getElementById('menuOverlay');
+
+  function openMenu() {
+    btn.classList.add('open');
+    menu.classList.add('open');
+    overlay.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    btn.classList.remove('open');
+    menu.classList.remove('open');
+    overlay.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', () => {
+    btn.getAttribute('aria-expanded') === 'true' ? closeMenu() : openMenu();
+  });
+  overlay.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+})();
+
+/* ============== REVEAL ON SCROLL ============== */
+(function() {
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  els.forEach(el => io.observe(el));
+})();
+
+/* ============== SCROLL PROGRESS BAR ============== */
+(function() {
+  const bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  let ticking = false;
+  function update() {
+    const h = document.documentElement;
+    const scrolled = h.scrollTop || document.body.scrollTop;
+    const total = h.scrollHeight - h.clientHeight;
+    const pct = total > 0 ? (scrolled / total) * 100 : 0;
+    bar.style.width = pct + '%';
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+
+/* ============== PARALLAX BANNER ============== */
+(function() {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+  const banner = document.querySelector('.espacio-frame');
+  const img = banner ? banner.querySelector('img') : null;
+  if (!img) return;
+  let ticking = false;
+  function update() {
+    const rect = banner.getBoundingClientRect();
+    const vh = window.innerHeight;
+    if (rect.bottom < 0 || rect.top > vh) { ticking = false; return; }
+    const progress = (vh - rect.top) / (vh + rect.height);
+    const offset = (progress - 0.5) * 80; // -40px..+40px
+    img.style.transform = 'translateY(' + offset.toFixed(1) + 'px)';
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+</script>
+</body>
+</html>
