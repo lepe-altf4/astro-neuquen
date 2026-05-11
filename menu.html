@@ -241,7 +241,7 @@
     object-fit: cover;
     border-radius: 6px;
     border: 1px solid var(--line);
-    background: #efe6d4;
+    background: var(--bg);
     display: block;
   }
   .item:last-child { border-bottom: none; }
@@ -568,7 +568,7 @@
 
   <section class="menu-hero" data-screen-label="00 Carta">
     <div class="menu-hero-accent">
-      <img src="img/astro_cafe_constelaciones.jpg" alt="Taza de café con constelaciones">
+      <img src="img/astro_cafe_constelaciones.jpg" alt="Taza de café con constelaciones" fetchpriority="high" loading="eager">
     </div>
     <span class="eyebrow">Carta · @astro.neuquen</span>
     <h1>Carta del <em>universo.</em></h1>
