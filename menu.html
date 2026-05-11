@@ -342,7 +342,13 @@
     margin: 0 auto;
     padding: 0 20px;
   }
-  .zodiacal-head { text-align: center; margin-bottom: 36px; }
+  .zodiacal-head {
+    margin-bottom: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+  }
   .zodiacal-head .eyebrow { color: var(--gold); }
   .zodiacal-head .eyebrow::before, .zodiacal-head .eyebrow::after {
     background: var(--gold); opacity: 0.6;
@@ -350,13 +356,15 @@
   .zodiacal-head h2 {
     font-size: 38px;
     margin: 18px 0 18px;
+    text-align: center;
   }
   .zodiacal-head h2 em { color: var(--gold); font-style: italic; }
   .zodiacal-head p {
     font-size: 15px;
     color: rgba(240, 230, 208, 0.78);
+    width: 100%;
     max-width: 520px;
-    margin: 0 auto;
+    text-align: center;
   }
   .zodiacal-discount {
     display: inline-flex;
@@ -508,6 +516,26 @@
     .zodiac-grid { grid-template-columns: repeat(2, 1fr); }
     .menu-hero h1 { font-size: 42px; }
     .cat-head h2 { font-size: 28px; }
+
+    /* Prevent zodiacal inline elements from overflowing left on narrow screens */
+    .zodiacal-inner { padding: 0 16px; }
+    .zodiacal-head .eyebrow { letter-spacing: 0.14em; }
+    .zodiacal-head .eyebrow::before,
+    .zodiacal-head .eyebrow::after { width: 16px; }
+    .zodiacal-head h2 { font-size: 32px; }
+    .zodiacal-discount {
+      max-width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px 10px;
+      padding: 10px 16px;
+    }
+    .sign-badge {
+      max-width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+    }
   }
 </style>
 </head>
