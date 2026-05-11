@@ -936,7 +936,7 @@
     z-index: 2;
     pointer-events: none;
   }
-  .event.evt-2 { background-image: url("https://images.unsplash.com/photo-1601024445121-e5b82f020549?auto=format&fit=crop&w=1200&q=80"); }
+  .event.evt-2 { background-image: url("img/eventos_tarot.jpg"); background-position: center top !important; }
   .event.evt-3 { background-image: url("https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=1200&q=80"); }
   .event.evt-4 { background-image: url("https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80"); }
   @media (max-width: 540px) {
@@ -956,6 +956,107 @@
     .event-poster::before {
       background: linear-gradient(180deg, transparent 50%, var(--bg) 100%);
     }
+  }
+
+  /* ---------- Evento activo ---------- */
+  .evento-activo {
+    background: var(--bg-2);
+    position: relative;
+    overflow: hidden;
+  }
+  .evento-activo-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 90px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .evento-activo-img {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    max-width: 340px;
+  }
+  .evento-activo-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .evento-activo-img-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #1c0f0f 0%, #2a1a0a 60%, #0f0b1c 100%);
+    font-size: 64px;
+  }
+  .evento-activo-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 14px;
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 22px;
+  }
+  .evento-activo-tag::before {
+    content: "●";
+    font-size: 7px;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .evento-activo h2 {
+    font-size: clamp(32px, 4vw, 52px);
+    margin-bottom: 16px;
+  }
+  .evento-activo h2 em { color: var(--gold); }
+  .evento-activo .evento-desc {
+    font-size: 16px;
+    color: rgba(240, 230, 208, 0.75);
+    line-height: 1.65;
+    max-width: 460px;
+    margin-bottom: 32px;
+  }
+  .evento-menu {
+    border-top: 1px solid var(--line);
+    margin-bottom: 32px;
+  }
+  .evento-menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px dashed rgba(240, 230, 208, 0.12);
+    gap: 16px;
+  }
+  .evento-menu-item:last-child { border-bottom: none; }
+  .evento-menu-name {
+    font-family: var(--serif);
+    font-size: 17px;
+    color: var(--cream);
+  }
+  .evento-menu-desc {
+    font-size: 13px;
+    color: rgba(240, 230, 208, 0.55);
+    margin-top: 2px;
+  }
+  .evento-menu-price {
+    font-family: var(--serif);
+    font-size: 17px;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  @media (max-width: 860px) {
+    .evento-activo-inner { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+    .evento-activo-img { max-width: 100%; aspect-ratio: 16/9; }
   }
 
   /* ---------- Real map embed ---------- */
@@ -1291,6 +1392,52 @@
 
 <div class="section-divider"></div>
 
+<!-- EVENTO ACTIVO -->
+<section class="evento-activo" id="evento-activo" data-screen-label="04b Evento">
+  <div class="evento-activo-inner">
+    <div class="evento-activo-img reveal">
+      <img src="img/eventos_tarot.jpg" alt="Cafetería con Tarot · Experiencia Zodiacal"
+        loading="lazy"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="evento-activo-img-placeholder" style="display:none">🔮</div>
+    </div>
+    <div class="reveal">
+      <div class="evento-activo-tag">Evento activo · Sábados</div>
+      <h2>Cafetería<br>con <em>Tarot.</em></h2>
+      <p class="evento-desc">
+        Los sábados en Astro se alinean con las estrellas. Tomá un café del signo del mes
+        y consultá las cartas. Una experiencia astral que combina sabor y misticismo.
+      </p>
+      <div class="evento-menu">
+        <div class="evento-menu-item">
+          <div>
+            <div class="evento-menu-name">Experiencia Zodiacal Completa</div>
+            <div class="evento-menu-desc">Sesión de tarot + café del signo del mes. Reserva previa.</div>
+          </div>
+          <div class="evento-menu-price">$18.000</div>
+        </div>
+        <div class="evento-menu-item">
+          <div>
+            <div class="evento-menu-name">Noche de Tarot Grupal</div>
+            <div class="evento-menu-desc">Evento grupal · lectura colectiva y maridaje astral.</div>
+          </div>
+          <div class="evento-menu-price">$12.000</div>
+        </div>
+        <div class="evento-menu-item">
+          <div>
+            <div class="evento-menu-name">Café del Signo del Mes</div>
+            <div class="evento-menu-desc">Solo el café zodiacal · sin sesión.</div>
+          </div>
+          <div class="evento-menu-price">$8.500</div>
+        </div>
+      </div>
+      <a href="menu.html#eventos" class="cta-gold">Ver en la carta →</a>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
 <!-- UBICACIÓN -->
 <section class="section" id="ubicacion" data-screen-label="05 Ubicacion">
   <div class="wrap">
@@ -1301,7 +1448,7 @@
     <div class="location-grid">
       <div class="location-info reveal">
         <div class="info-block">
-          <div class="label">Dirección</div>
+          <div class="label">Astro Café de Especialidad</div>
           <div class="value">Julio Argentino Roca 139</div>
           <div class="sub">Neuquén Capital · Argentina · 8300</div>
         </div>
@@ -1319,9 +1466,6 @@
         </div>
       </div>
       <a href="https://maps.google.com/?q=Julio+Argentino+Roca+139+Neuquen+Argentina" target="_blank" rel="noopener" class="map-frame reveal" aria-label="Ver Astro en Google Maps">
-        <iframe class="map-embed" loading="lazy" title="Ubicación Astro Neuquén"
-          src="https://www.openstreetmap.org/export/embed.html?bbox=-68.0694%2C-38.9590%2C-68.0494%2C-38.9450&layer=mapnik&marker=-38.9520%2C-68.0594"
-          allowfullscreen></iframe>
         <span class="map-overlay-pin"></span>
         <span class="map-coords">38°57'S · 68°04'W</span>
         <span class="map-label">Astro · J.A. Roca 139</span>
