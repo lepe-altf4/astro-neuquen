@@ -496,6 +496,109 @@
     box-shadow: 0 0 12px rgba(201, 164, 85, 0.5);
   }
 
+  /* ===== Dark mode ===== */
+  html.dark {
+    --bg: #0f0b07;
+    --ink: #f0e6d0;
+    --ink-soft: #c9a882;
+    --muted: #8a7055;
+    --line: rgba(240, 230, 208, 0.1);
+    --line-strong: rgba(240, 230, 208, 0.18);
+  }
+  html.dark .cat-nav {
+    background: rgba(15, 11, 7, 0.97);
+    border-bottom-color: rgba(201, 164, 85, 0.2);
+  }
+  html.dark .cat-nav-list a { color: rgba(240, 230, 208, 0.6); }
+  html.dark .cat-nav-list a:hover { background: rgba(201, 164, 85, 0.08); color: var(--cream); }
+  html.dark .cat-nav-list a.active { background: var(--bg-dark); color: var(--gold); border-color: var(--bg-dark); }
+  html.dark .item-name { color: var(--ink); }
+  html.dark .item-thumb { background: #1c120a; border-color: rgba(240, 230, 208, 0.12); }
+  html.dark .featured { color: var(--gold); border-color: rgba(201, 164, 85, 0.5); }
+  html.dark .menu-foot p { color: var(--muted); }
+  html.dark .scroll-progress { background: linear-gradient(90deg, var(--wine), var(--gold)); }
+  .theme-toggle {
+    background: none;
+    border: 1px solid rgba(240, 230, 208, 0.25);
+    border-radius: 999px;
+    color: var(--cream);
+    width: 32px; height: 32px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s, background 0.2s;
+    flex-shrink: 0;
+    line-height: 1;
+    padding: 0;
+  }
+  .theme-toggle:hover { border-color: var(--gold); background: rgba(201, 164, 85, 0.1); }
+
+  /* ===== Moon decorations ===== */
+  .moon-strip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0 0;
+    font-size: 17px;
+    opacity: 0.55;
+    letter-spacing: 4px;
+  }
+  html.dark .moon-strip { opacity: 0.7; }
+
+  /* ===== Eventos section ===== */
+  .eventos-poster {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    aspect-ratio: 3/4;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    background: var(--ink);
+  }
+  .eventos-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .eventos-poster-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 28px 20px 20px;
+    background: linear-gradient(transparent, rgba(11, 4, 4, 0.88));
+    color: var(--cream);
+    text-align: left;
+  }
+  .eventos-badge {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .eventos-title {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .eventos-sub {
+    font-size: 13px;
+    color: rgba(240, 230, 208, 0.7);
+  }
+  /* placeholder when image not yet added */
+  .eventos-poster-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #1c0f0f 0%, #2a1a0a 50%, #0f0b1c 100%);
+    font-size: 48px;
+    opacity: 0.6;
+  }
+
   @media (max-width: 540px) {
     body { padding-top: 124px; }
     .menu-hero { padding: 40px 0 36px; }
@@ -546,7 +649,10 @@
       <span class="logo-mark"></span>
       <span>astro<em>·</em></span>
     </a>
-    <a href="index.html" class="back-link">← Volver al sitio</a>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema" title="Claro / Oscuro">☾</button>
+      <a href="index.html" class="back-link">← Volver al sitio</a>
+    </div>
   </div>
 </header>
 
@@ -559,6 +665,7 @@
       <li><a href="#brunch" data-target="brunch">🥑 Brunch</a></li>
       <li><a href="#tostadas" data-target="tostadas">🥪 Tostadas</a></li>
       <li><a href="#dulces" data-target="dulces">🥐 Dulces</a></li>
+      <li><a href="#eventos" data-target="eventos">🔮 Eventos</a></li>
       <li><a href="#zodiacal" data-target="zodiacal">♈ Zodiacal</a></li>
     </ul>
   </div>
@@ -573,6 +680,7 @@
     <span class="eyebrow">Carta · @astro.neuquen</span>
     <h1>Carta del <em>universo.</em></h1>
     <p class="lede">Como la luna, la dulzura también tiene sus fases. Bienvenidos a la carta de Astro.</p>
+    <div class="moon-strip" aria-hidden="true">🌑🌒🌓🌔🌕🌖🌗🌘🌑</div>
   </section>
 
   <!-- ===== CAFÉS ===== -->
@@ -897,8 +1005,43 @@
   </section>
 </main>
 
+<!-- ===== EVENTOS (inside menu-wrap) ===== -->
+<div class="menu-wrap">
+<section class="cat-section" id="eventos" data-screen-label="07 Eventos">
+  <div class="cat-head">
+    <span class="cat-emoji">🔮</span>
+    <span class="cat-num">Categoría 07</span>
+    <h2>Eventos & Experiencias</h2>
+  </div>
+  <div class="eventos-poster">
+    <img src="img/eventos_tarot.jpg" alt="Café y Tarot · Experiencia Zodiacal" loading="lazy"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="eventos-poster-placeholder" style="display:none">🔮</div>
+    <div class="eventos-poster-overlay">
+      <div class="eventos-badge">✦ Experiencia especial</div>
+      <div class="eventos-title">Café & Tarot</div>
+      <div class="eventos-sub">Donde el café se alinea con las estrellas</div>
+    </div>
+  </div>
+  <div class="item">
+    <div>
+      <div class="item-name">Experiencia Zodiacal Completa</div>
+      <div class="item-desc">Sesión de tarot + café del signo del mes. Reserva previa requerida.</div>
+    </div>
+    <div class="item-price">$18.000</div>
+  </div>
+  <div class="item">
+    <div>
+      <div class="item-name">Noche de Tarot</div>
+      <div class="item-desc">Evento grupal · café, lectura colectiva y maridaje astral. Consultá fechas.</div>
+    </div>
+    <div class="item-price">$12.000</div>
+  </div>
+</section>
+</div>
+
 <!-- ===== ZODIACAL (full-bleed dark) ===== -->
-<section class="zodiacal" id="zodiacal" data-screen-label="07 Zodiacal">
+<section class="zodiacal" id="zodiacal" data-screen-label="08 Zodiacal">
   <div class="zodiacal-stars"></div>
   <div class="zodiacal-inner">
     <div class="zodiacal-head">
@@ -1057,6 +1200,23 @@
         setActive(id);
       }
     });
+  });
+})();
+
+/* ===== Dark mode toggle ===== */
+(function() {
+  const btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  const apply = (dark) => {
+    document.documentElement.classList.toggle('dark', dark);
+    btn.textContent = dark ? '☀' : '☾';
+    btn.title = dark ? 'Modo claro' : 'Modo oscuro';
+  };
+  apply(localStorage.getItem('astro-theme') === 'dark');
+  btn.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.contains('dark');
+    localStorage.setItem('astro-theme', isDark ? 'light' : 'dark');
+    apply(!isDark);
   });
 })();
 </script>
